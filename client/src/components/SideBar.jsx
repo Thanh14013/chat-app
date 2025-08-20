@@ -1,11 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import assets, { userDummyData } from '../assets/assets'
+import assets from '../assets/assets'
 import { AuthContext } from '../context/AuthContext'
+import { ChatContext } from '../context/ChatContext'
 
-const SideBar = ({ selectedUser, setSelectedUser }) => {
+const SideBar = () => {
+
   const navigate = useNavigate()
-  const {logout} = useContext(AuthContext);
+
+  const { logout, onlineUsers } = useContext(AuthContext);
+
+  const { getUsers, users, selectedUser, setSelectedUser, unseenMessages, setUnseenMessages } = useContext(ChatContext);
+
+  const [input, setInput] = useState(false);
+
+  useEffect(() => {
+    getUsers();
+  }, [onlineUsers])
+
+  const filteredUsers = input ? users.filter((user) => user.fullName.toLowerCase().
+    includes(input.toLowerCase())) : users;
 
   return (
     <div className={`bg-[#8185B2]/10 h-full p-5 rounded-r-xl overflow-y-scroll text-white ${selectedUser ? "max-md:hidden" : ''}`}>
@@ -33,25 +47,25 @@ const SideBar = ({ selectedUser, setSelectedUser }) => {
       </div>
 
       <div className="flex flex-col">
-        {userDummyData.map((user, index) => (
+        {filteredUsers.map((user, index) => (
           <div key={index} className={`relative flex items-center gap-3 p-3 rounded cursor-pointer hover:bg-[#282142]/30 ${selectedUser?._id === user._id ? 'bg-[#282142]/50' : ''
             }`} onClick={() => setSelectedUser(user)}>
-            <img 
-              src={user?.profilePic || assets.avatar_icon} 
+            <img
+              src={user?.profilePic || assets.avatar_icon}
               alt={user.fullName}
               className="w-12 h-12 rounded-full object-cover"
             />
             <div className="flex flex-col flex-1">
               <p className="text-sm font-medium">{user.fullName}</p>
-              {index < 3 ? (
+              {onlineUsers.includes(user._id) ? (
                 <span className="text-green-400 text-xs">Online</span>
               ) : (
                 <span className="text-gray-400 text-xs">Offline</span>
               )}
             </div>
-            {index > 2 && (
+            {unseenMessages[user._id] > 0 && (
               <div className="text-xs h-5 w-5 flex justify-center items-center rounded-full bg-blue-500 text-white font-medium">
-                {index}
+                {unseenMessages[user._id]}
               </div>
             )}
           </div>
