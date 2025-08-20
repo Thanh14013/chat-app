@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     // Login function to handle user authentication and socket connection
     const login = async (state, credentials) => {
         try {
-            const { data } = await axios.post(`/api/auth/${state}`, credentials);
+            const { data } = await axios.post(`/api/users/${state}`, credentials);
 
             if (data.success) {
                 setAuthUser(data.userData);
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
     // Update profile function to handle user profile updates
     const updateProfile = async (body) => {
         try {
-            const { data } = await axios.put("/api/auth/update-profile", body);
+            const { data } = await axios.put("/api/users/update-profile", body);
             if (data.success) {
                 setAuthUser(data.user);
                 toast.success("Profile updated successfully");
