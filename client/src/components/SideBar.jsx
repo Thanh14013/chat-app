@@ -49,7 +49,7 @@ const SideBar = () => {
       <div className="flex flex-col">
         {filteredUsers.map((user, index) => (
           <div key={index} className={`relative flex items-center gap-3 p-3 rounded cursor-pointer hover:bg-[#282142]/30 ${selectedUser?._id === user._id ? 'bg-[#282142]/50' : ''
-            }`} onClick={() => setSelectedUser(user)}>
+            }`} onClick={() => {setSelectedUser(user); setUnseenMessages((prev) => ({ ...prev, [user._id]: 0 }));}}>
             <img
               src={user?.profilePic || assets.avatar_icon}
               alt={user.fullName}
