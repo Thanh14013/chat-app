@@ -193,7 +193,7 @@ This project is licensed under the ISC License.
 
 ## 📞 Contact
 
-For any inquiries or support, please contact [thanh14704@example.com]
+For any inquiries or support, please contact [thanh14704@gmail.com]
 
 ---
 
