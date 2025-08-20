@@ -1,6 +1,7 @@
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { io } from "socket.io-client";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL = backendUrl;
@@ -17,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     // Check if user is authenticated and if so, set the user data and connect socket
     const checkAuth = async () => {
         try {
-            const { data } = await axios.get("/api/auth/check");
+            const { data } = await axios.get("/api/users/check");
             if (data.success) {
                 setAuthUser(data.user);
                 connectSocket(data.user);  // Kết nối socket với user data
